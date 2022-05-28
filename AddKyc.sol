@@ -5,7 +5,7 @@ import "./Subscription.sol";
 import "./GovTok.sol";
 import "./globalVar.sol";
 
-contract AddKyC is GlobVars ,Subscription , GovernanceToken {
+contract AddKyC is Subscription , GovernanceToken {
     event KycAdded(uint indexed _id , address indexed adder);
     event KycUpdated(uint indexed _id , address indexed updator , uint numOfUpdates);
     event KycDeleted(uint indexed _id , address indexed adder , uint numberOfDeConf);
@@ -69,4 +69,18 @@ contract AddKyC is GlobVars ,Subscription , GovernanceToken {
     function changeDeletedConfirmationsAllowed(uint newValue) internal {
         DeConfirmationsAllowed = newValue;
     }
+
+    // Function for other Financial Institutions to confirm wheather the Kyc performed was correct or wrong
+
+    function confirm(uint _id , bool _valid) public onlyAllowed {
+        require(Confirmed[_id][msg.sender] ==  false , "vote already given");
+        if(_valid){
+            Users[_id].numOfConfirmations += 1;
+        }else{
+            Users[_id].numOfDeConfirmations += 1;
+        }
+
+        Confirmed[_id][msg.sender] == true;
+    }
+
 }
