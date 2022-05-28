@@ -1,18 +1,17 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "./GovTok.sol";
-import "./globalVar.sol";
+
 import "./Voting.sol";
-import "./Subscription.sol";
-import "./AddKyc.sol";
+
+import "./CheckKyc.sol";
 
 // Governance contract to change the deployed global variable parameters.
 // This does not add new features or listen for praposals.
 // That can be done off chain with voting rights accoriding to number of tokens
 // To Do it on chain openZepplins Governance contract is used in another branch of the project
 
-contract Governance is  GlobVars , AddKyC {
+contract Governance is  CheckKyc {
     // state variables that can change -- SubscriptionFee , DeConfirmationsAllowed
     event Praposalsubmitted(uint newFeeAmount , uint newDeConfAmount , uint timeStamp );
     event ValuesChanged(uint newValue1 , uint newValue2);
@@ -41,7 +40,7 @@ contract Governance is  GlobVars , AddKyC {
 // function to directly vote in the Voting contract using delegate call so msg.sender remains same
     function castevote(bool vote) public onlyAllowed returns(bool){
         require(praposalActive == true , "No praposals active");
-        (bool success , bytes memory data)=address(Voting).delegatecall(abi.encodeWithSignature("castVote(bool vote)", vote));
+        (bool success , )=address(Voting).delegatecall(abi.encodeWithSignature("castVote(bool vote)", vote));
         return success;
     }
 
