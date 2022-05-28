@@ -21,6 +21,18 @@ contract CheckKyc is AddKyC {
         numOfconf = Users[_id].numOfConfirmations;
     }
 
+    // Function for other Financial Institutions to confirm wheather the Kyc performed was correct or wrong
+
+    function confirm(uint _id , bool _valid) public onlyAllowed {
+        require(Confirmed[_id][msg.sender] ==  false , "vote already given");
+        if(_valid){
+            Users[_id].numOfConfirmations += 1;
+        }else{
+            Users[_id].numOfDeConfirmations += 1;
+        }
+
+        Confirmed[_id][msg.sender] == true;
+    }
 
 
 }
