@@ -1,22 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.10;
 
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract GovernanceToken is ERC20Votes {
-    constructor() ERC20("Governance Token", "KyCdao") ERC20Permit("Governance Token") {}
-
-
-    function _afterTokenTransfer(address from, address to,uint256 amount) internal override(ERC20Votes) {
-         super._afterTokenTransfer(from, to, amount);
-    }
-
-    function _mint(address to, uint256 amount) internal override(ERC20Votes) {
-        super._mint(to, amount);
-    }
-
-    function _burn(address account, uint256 amount) internal override(ERC20Votes) {
-        super._burn(account, amount);
-    }
+contract GovernanceToken is ERC20 {
+    constructor() ERC20("Governance Token", "KyCdao") {}
+    // Makes an ERC20 governance token
+    // Initial value is 0
+    // Users can mint the tokens by adding User kYC's
 }
 
